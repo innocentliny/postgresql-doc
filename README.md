@@ -61,7 +61,7 @@ Steps to install postgresql and parser.
    createuser -d -P -s test
    ```
 
-## Install scws
+### Install scws
 1. Install general development tools, eg: make, C libraries...:
    ```shell script
    dnf group install "Development Tools"
@@ -80,7 +80,7 @@ Steps to install postgresql and parser.
    ```
    ![scws_version](img/scws_version.png)
 
-## Install zhparser
+### Install zhparser
 1. Install needed packages:
    ```shell script
    dnf install https://download-ib01.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/c/ccache-3.7.7-1.el8.x86_64.rpm
