@@ -34,7 +34,7 @@ Steps to install postgresql and parser.
    ```shell script
    cd /var/lib/pgsql/12/data
    ```
-1. Create zhparser.conf with below settings:
+1. Create [zhparser.conf](zhparser.conf) with below settings:
    ```shell script
    zhparser.seg_with_duality=f
    zhparser.multi_short=t
@@ -43,12 +43,12 @@ Steps to install postgresql and parser.
    zhparser.multi_zall=f
    ```
 1. Setup postgresql config for testing:
-   * postgresql.conf
+   * [postgresql.conf](postgresql.conf)
      * change ``` listen_addresses = 'localhost' ``` to ``` listen_addresses = '*' ```
        ![postgresql_conf_listen_addresses](img/postgresql_conf_listen_addresses.png)
      * add ``` include = 'zhparser.conf' ```
        ![postgresql_conf_include](img/postgresql_conf_include.png)
-   * pg_hba.conf
+   * [pg_hba.conf](pg_hba.conf)
      * add ``` host    all             all             all                     password ```
        ![pg_hba_conf_host_all](img/pg_hba_conf_host_all.png)
 1. Start postgresql service even after reboot:
@@ -256,6 +256,7 @@ Several actions can be used to meet requirements.
   set zhparser.multi_zmain=off;
   set zhparser.multi_zall=off;
   ```
+  Try different combinations to meet the requirement, then save it to [zhparser.conf](zhparser.conf)
 
 * Debug how a text is parsed via SQL:
   ```sql
