@@ -45,9 +45,12 @@ Steps to install postgresql and parser.
 1. Setup postgresql config for testing:
    * postgresql.conf
      * change ``` listen_addresses = 'localhost' ``` to ``` listen_addresses = '*' ```
+       ![postgresql_conf_listen_addresses](img/postgresql_conf_listen_addresses.png)
      * add ``` include = 'zhparser.conf' ```
+       ![postgresql_conf_include](img/postgresql_conf_include.png)
    * pg_hba.conf
      * add ``` host    all             all             all                     password ```
+       ![pg_hba_conf_host_all](img/pg_hba_conf_host_all.png)
 1. Start postgresql service even after reboot:
    ```shell script
    systemctl enable postgresql-12 ; systemctl start postgresql-12
