@@ -256,7 +256,7 @@ Several actions can be used to meet requirements.
   set zhparser.multi_zmain=off;
   set zhparser.multi_zall=off;
   ```
-  Try different combinations to meet the requirement, then save it to [zhparser.conf](zhparser.conf)
+  Try different combinations to meet the requirement, then save it to [zhparser.conf](zhparser.conf).
 
 * Debug how a text is parsed via SQL:
   ```sql
