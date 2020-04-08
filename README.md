@@ -135,12 +135,6 @@ I will use hunsepll to parse English, and zhparser for Chinese.
    CREATE TEXT SEARCH CONFIGURATION testzhcfg (PARSER = zhparser);
    ALTER TEXT SEARCH CONFIGURATION testzhcfg alter MAPPING FOR a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z with english_hunspell, simple;
    ```
-   > More mapping, more parsed result (tokens) for a text.
-   * To show what zhparser can parse:
-      ```sql
-      select * from ts_token_type('zhparser');
-      ```
-     ![zhparser_token_type](img/zhparser_token_type.png)
 
 ## Test text parsing
 Let's parse a English text first:
@@ -216,3 +210,66 @@ from user_file uf, to_tsquery('testzhcfg', '我們') query where text_search_con
 You can specified highlight tag with ___StartSel___ and ___StopSel___ options of ts_headline, default is &lt;b&gt; and &lt;/b&gt;.
 
 # Turning
+Several actions can be used to meet requirements.
+
+* Adjust token type to parse
+
+  To list all supported token type for a parser:
+  ```sql
+  select * from ts_token_type('zhparser');
+  ```
+  ![zhparser_token_type](img/zhparser_token_type.png)
+
+  Then alter needed mapping of text search mapping, for example:
+  ```sql
+  ALTER TEXT SEARCH CONFIGURATION testzhcfg alter MAPPING FOR a, e, g, l, n, r, v, x with english_hunspell, simple;
+  ```
+  More mapping token type usage, more parsed results (tokens) for a text, but maybe more space to store or unnecessary results.
+
+* Add customized word
+
+  Special words can be inserted into zhparser.zhprs_custom_word:
+  ![zhprs_custom_word_table](img/zhprs_custom_word_table.png)
+  > Column attr value: '@' means use this word; '!' means not use or parse the word.
+
+  > TODO: the meaning of tf and idf.
+
+  For example:
+  ```sql
+  INSERT INTO zhparser.zhprs_custom_word (word) VALUES ('資金');
+  ```
+  When '資金' appears in text, it will be pasred as '資金' first.
+
+  After updating or insertion, it's necessary to execute below SQL and reconnect to DB:
+  ```sql
+  select sync_zhprs_custom_word();
+  ```
+
+* Dynamic change [zhparser config](https://github.com/amutu/zhparser#configuration) via SQL:
+  ```sql
+  set zhparser.seg_with_duality=off;
+  set zhparser.multi_short=off;
+  set zhparser.punctuation_ignore=on;
+  set zhparser.multi_zmain=off;
+  set zhparser.multi_zall=off;
+  ```
+
+* Debug how a text is parsed via SQL:
+  ```sql
+  SELECT * FROM ts_debug('testzhcfg', '保障房資金壓力逗號');
+  ```
+  ![debug_parsing](img/debug_parsing.png)
+  * 'alias' and 'description' columns show what token type is used to get the token.
+  * 'dictionaries' column lists all dictionaries for testzhcfg text search config.
+  * 'dictionary' column shows the dictionary is used. See [Simple Dictionary](https://www.postgresql.org/docs/12/textsearch-dictionaries.html#TEXTSEARCH-SIMPLE-DICTIONARY) for 'simple'.
+
+# Related text search functions
+See [text search controls](https://www.postgresql.org/docs/12/textsearch-controls.html) for details.
+* to_tsquery
+* plainto_tsquery
+* phraseto_tsquery
+* websearch_to_tsquery
+* ts_rank
+* ts_rank_cd
+* ts_rewrite
+* ts_stat
