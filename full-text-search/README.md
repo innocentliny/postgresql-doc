@@ -268,6 +268,7 @@ Several actions can be used to meet requirements.
   * 'dictionary' column shows the dictionary is used. See [Simple Dictionary](https://www.postgresql.org/docs/12/textsearch-dictionaries.html#TEXTSEARCH-SIMPLE-DICTIONARY) for 'simple'.
 
 * Get headline (highlight) later:
+
   For instance, user_file table has 50,000 rows. To select ID and headline together would take 1.998 seconds:
   ```sql
   select id, ts_headline('testzhcfg', content, query, 'MinWords = 5, MaxWords = 20')
@@ -288,6 +289,7 @@ Several actions can be used to meet requirements.
   ```
 
 * More functions, more cost:
+
   Functions like ts_headline() and ts_rank() are heavy cost, consider performance when using.
 
 # Related text search functions
