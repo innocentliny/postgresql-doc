@@ -267,6 +267,29 @@ Several actions can be used to meet requirements.
   * 'dictionaries' column lists all dictionaries for testzhcfg text search config.
   * 'dictionary' column shows the dictionary is used. See [Simple Dictionary](https://www.postgresql.org/docs/12/textsearch-dictionaries.html#TEXTSEARCH-SIMPLE-DICTIONARY) for 'simple'.
 
+* Get headline (highlight) later:
+  For instance, user_file table has 50,000 rows. To select ID and headline together would take 1.998 seconds:
+  ```sql
+  select id, ts_headline('testzhcfg', content, query, 'MinWords = 5, MaxWords = 20')
+  from user_file uf, to_tsquery('testzhcfg', '我 <-> 們') query
+  where text_search_content @@ query
+  limit 10;
+  ```
+  But getting matched ID first, then headline would only take 160 milliseconds:
+  ```sql
+  select id
+  from user_file
+  where text_search_content @@ to_tsquery('testzhcfg', '我 <-> 們')
+  limit 10;
+
+  select id, ts_headline('testzhcfg', content, to_tsquery('testzhcfg', '我 <-> 們'), 'MinWords = 5, MaxWords = 20')
+  from user_file uf
+  where uf.id in (40, 1009, 1007, 1008, 1003, 1010, 1005, 1004, 1006, 1011);
+  ```
+
+* More functions, more cost:
+  Functions like ts_headline() and ts_rank() are heavy cost, consider performance when using.
+
 # Related text search functions
 See [text search controls](https://www.postgresql.org/docs/12/textsearch-controls.html) for details.
 * to_tsquery
