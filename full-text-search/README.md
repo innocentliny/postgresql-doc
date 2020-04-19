@@ -2,6 +2,7 @@
 Testing full text searching with Chinese language.
 
 ## Reference
+* https://www.postgresql.eu/events/pgconfeu2018/sessions/session/2116/slides/137/pgconf.eu-2018-fts.pdf
 * https://www.itread01.com/content/1545704120.html
 * https://www.itread01.com/content/1562861174.html
 * https://developer.aliyun.com/article/7730
@@ -10,6 +11,7 @@ Testing full text searching with Chinese language.
 * https://gist.github.com/bruce-shi/af5b03e2fa307bd0f5fe2173e65b6e76
 * http://www.xunsearch.com/scws/docs.php
 * [Text Search Functions and Operators](https://www.postgresql.org/docs/12/functions-textsearch.html#TEXTSEARCH-FUNCTIONS-TABLE)
+* http://rachbelaid.com/postgres-full-text-search-is-good-enough/
 
 ## Environment
 * CentOS-8.1.1911-x86_64
@@ -212,7 +214,7 @@ from user_file uf, to_tsquery('testzhcfg', '我們') query where text_search_con
 
 You can specified highlight tag with ___StartSel___ and ___StopSel___ options of ts_headline, default is &lt;b&gt; and &lt;/b&gt;.
 
-# Turning
+# Tuning
 Several actions can be used to meet requirements.
 
 * Adjust token type to parse
@@ -292,7 +294,7 @@ Several actions can be used to meet requirements.
 
   Functions like ts_headline() and ts_rank() are heavy cost, consider performance when using.
 
-# Related text search functions
+# Related functions
 See [text search controls](https://www.postgresql.org/docs/12/textsearch-controls.html) for details.
 * to_tsquery
 * plainto_tsquery
@@ -302,3 +304,14 @@ See [text search controls](https://www.postgresql.org/docs/12/textsearch-control
 * ts_rank_cd
 * ts_rewrite
 * ts_stat
+* setweight
+  ```sql
+  select setweight( to_tsvector('english', '20-th anniversary of PostgreSQL'),'A',  '{postgresql,20}');
+  ```
+
+# Related extensions
+* [unaccent](https://www.postgresql.org/docs/12/unaccent.html)
+* [pg_trgm](https://www.postgresql.org/docs/12/pgtrgm.html)
+* rum
+  * https://github.com/postgrespro/rum
+  * https://pgxn.org/search?q=rum&in=extensions
