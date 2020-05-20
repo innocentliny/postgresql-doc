@@ -21,6 +21,7 @@ Convert createdDttm (timestamptz type) to epoch milliseconds in bigint type, the
   |worng_hour_diff|correct_hour_diff|
   |---------------|-----------------|
   |0              |24               |
+
   The ```{fn TIMESTAMPDIFF}``` is translated
   from
   ```sql
